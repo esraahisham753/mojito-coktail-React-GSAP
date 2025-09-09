@@ -4,6 +4,7 @@ import gsap from "gsap"
 import { useRef } from "react"
 import { useMediaQuery } from "react-responsive"
 
+
 const Hero = () => {
   const videoRef = useRef();
   const isMobile = useMediaQuery({maxWidth: 767});
@@ -47,7 +48,29 @@ const Hero = () => {
 
     leavesTimeline.to('.left-leaf', {y: -200}, 0),
     leavesTimeline.to('.right-leaf', {y: 200}, 0);
-  });
+
+    // Video scroll-based animation
+    if (videoRef.current) {
+      const video = videoRef.current;
+      
+      // Create timeline for video animation
+      const videoTimeline = gsap.timeline({
+        scrollTrigger: {
+          trigger: 'video',
+          start: start,
+          end: end,
+          scrub: true, // Smooth scrubbing with 1 second lag
+          pin: true
+        }
+      });
+
+      videoRef.current.onloadedmetadata = () => {
+        videoTimeline.to(videoRef.current, {
+          currentTime: videoRef.current.duration
+        })
+      }
+    }
+  }, []);
 
   return (
     <>
@@ -79,10 +102,10 @@ const Hero = () => {
         </section>
         <div className="video absolute inset-0">
           <video
-            src="/videos/input.mp4"
+            src="/videos/output.mp4"
             muted
             playsInline
-            preload="auto" 
+            preload="auto"
             ref={videoRef}
           />
         </div>

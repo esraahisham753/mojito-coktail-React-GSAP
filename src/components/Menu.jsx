@@ -1,5 +1,7 @@
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { sliderLists } from "../../constants";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
 
 const Menu = () => {
   const [currenIndex, setCurrentIndex] = useState(0);
@@ -12,6 +14,57 @@ const Menu = () => {
   const currentCocktail = getCocktail(0);
   const prevCocktail = getCocktail(-1);
   const nextCocktail = getCocktail(1);
+
+  useGSAP(() => {
+    gsap.fromTo('#title', {
+      opacity: 0
+    }, {
+      opacity: 1,
+      duration: 1
+    });
+
+    gsap.fromTo('.cocktail', {
+      opacity: 0,
+      xPercent: -100
+    }, {
+      opacity: 1,
+      xPercent: 0,
+      duration: 1,
+      ease: 'power1.inOut'
+    });
+
+    gsap.fromTo('.details h2', {
+      opacity: 0,
+      yPercent: 100
+    }, {
+      opacity: 1,
+      yPercent: 0,
+      duration: 1,
+      ease: 'power1.inOut'
+    });
+
+    gsap.fromTo('.details p', {
+      opacity: 0,
+      yPercent: 100
+    }, {
+      opacity: 1,
+      yPercent: 0,
+      duration: 1,
+      ease: 'power1.inOut'
+    });
+
+    const menuTimeline = gsap.timeline({
+      scrollTrigger: {
+        trigger: '#menu',
+        start: 'top top',
+        end: 'bottom top'
+      }
+    });
+
+    
+
+  }, [currenIndex]);
+
 
   return (
     <section id="menu" aria-labelledby="menu-heading">
@@ -31,6 +84,35 @@ const Menu = () => {
           })
         }
       </nav>
+
+      <div className="content">
+        <div className="arrows">
+          <button className="text-left" onClick={() => goToSlide(currenIndex - 1)}>
+            <span>{prevCocktail.name}</span>
+            <img src="/images/right-arrow.png" alt="right-arrow" aria-hidden="true" />
+          </button>
+          <button className="text-right" onClick={() => goToSlide(currenIndex + 1)}>
+            <span>{nextCocktail.name}</span>
+            <img src="/images/left-arrow.png" alt="left-arrow" aria-hidden="true" />
+          </button>
+        </div>
+
+        <div className="cocktail">
+          <img src={currentCocktail.image} alt="cocktail image" className="object-contain" />
+        </div>
+
+        <div className="recipe">
+          <div className="info">
+            <p>Recipes for:</p>
+            <p id="title">{currentCocktail.name}</p>
+          </div>
+
+          <div className="details">
+            <h2>{currentCocktail.title}</h2>
+            <p>{currentCocktail.description}</p>
+          </div>
+        </div>
+      </div>
     </section>
   )
 }

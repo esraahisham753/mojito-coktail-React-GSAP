@@ -1,4 +1,5 @@
 import { useGSAP } from "@gsap/react"
+import { ScrollTrigger } from 'gsap/all'
 import { featureLists, goodLists } from "../../constants"
 import { useMediaQuery } from "react-responsive";
 import gsap from "gsap";
@@ -19,6 +20,9 @@ const Art = () => {
         }
     });
 
+    // Ensure scaling happens from center
+    gsap.set('.masked-img', { transformOrigin: '50% 50%' });
+
     scrollTimeline.to('.will-fade', {
         opacity: 0,
         duration: 1,
@@ -31,6 +35,8 @@ const Art = () => {
         duration: 1,
         maskPosition: 'center',
         maskSize: '400%',
+        WebkitMaskPosition: 'center',
+        WebkitMaskSize: '400%',
         ease: 'power1.inOut'
     });
 
@@ -38,7 +44,14 @@ const Art = () => {
         opacity: 1,
         duration: 1,
         ease: 'power1.inOut'
-    })
+    });
+
+    // Recalculate after layout/images load to avoid initial misalignment on desktop
+    gsap.delayedCall(0.1, () => {
+      if (typeof window !== 'undefined') {
+        ScrollTrigger.refresh();
+      }
+    });
   }, []);
 
   return (

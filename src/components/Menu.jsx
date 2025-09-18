@@ -56,7 +56,7 @@ const Menu = () => {
     const menuTimeline = gsap.timeline({
       scrollTrigger: {
         trigger: '#menu',
-        start: 'top top',
+        start: 'top 20%',
         end: 'bottom top',
         scrub: true
       }

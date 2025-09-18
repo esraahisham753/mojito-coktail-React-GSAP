@@ -57,11 +57,13 @@ const Menu = () => {
       scrollTrigger: {
         trigger: '#menu',
         start: 'top top',
-        end: 'bottom top'
+        end: 'bottom top',
+        scrub: true
       }
     });
 
-    
+    menuTimeline.to('#m-left-leaf', {y: -200}, 0);
+    menuTimeline.to('#m-right-leaf', {y: 200}, 0);
 
   }, [currenIndex]);
 

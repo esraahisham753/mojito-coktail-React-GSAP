@@ -14,13 +14,32 @@ const Contact = () => {
       {
         scrollTrigger: {
           trigger: '#contact',
-          start: 'top center',
-          end: 'bottom top',
-          scrub: true
+          start: 'top center'
         },
-        
+        ease: 'power1.inOut'
       }
     );
+
+    timeline.from(splitheading.words, {
+      yPercent: 100,
+      opacity: 0,
+      stagger: 0.02
+    })
+    .from('.content h3, .content p', {
+      yPercent: 100,
+      opacity: 0,
+      stagger: 0.02
+    })
+    .to('#f-right-leaf', {
+      yPercent: -50,
+      duration: 1,
+      ease: 'power1.inOut'
+    })
+    .to('#f-left-leaf', {
+      yPercent: -50,
+      duration: 1,
+      ease: 'power1.inOut'
+    }, '<');
 
     
   }, []);
